@@ -38,7 +38,7 @@ def extract_text_from_pdf(pdf_file):
 def create_mindmap_markdown(text):
     """Generate mindmap markdown using Gemini AI."""
     try:
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         
         max_chars = 30000
         if len(text) > max_chars:
