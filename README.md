@@ -96,7 +96,3 @@ API_KEY = "PASTE API KEY"  # Replace with your Google API key
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
-
-## License
-
-This project is open source and available under the [MIT License](./LICENSE).
