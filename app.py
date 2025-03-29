@@ -25,16 +25,13 @@ def configure_genai():
 def extract_text_from_pdf(pdf_file):
     """Extract text from uploaded PDF file, including scanned PDFs."""
     try:
-        # Save the uploaded file to a temporary location
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
             temp_file.write(pdf_file.read())
             temp_file_path = temp_file.name
 
-        # Attempt to extract text using PyPDF2
         pdf_reader = PdfReader(temp_file_path)
         text = "\n".join(page.extract_text() for page in pdf_reader.pages if page.extract_text())
-        
-        # If no text is extracted, use OCR
+
         if not text.strip():
             st.warning("No text could be extracted from the PDF. Attempting OCR...")
             images = convert_from_path(temp_file_path)  # Convert PDF pages to images
@@ -51,7 +48,7 @@ def extract_text_from_pdf(pdf_file):
         st.error(f"Error reading PDF: {str(e)}")
         return None
     finally:
-        # Clean up the temporary file
+        
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
 
@@ -174,7 +171,7 @@ def generate_questions_from_text(text):
         if not response.text or not response.text.strip():
             st.error("Received empty response from Gemini AI")
             return None
-        return response.text.strip().split("\n")  # Split the response into a list of questions
+        return response.text.strip().split("\n") 
     except Exception as e:
         st.error(f"Error generating questions: {str(e)}")
         return None
