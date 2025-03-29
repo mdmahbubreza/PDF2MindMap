@@ -43,7 +43,7 @@ PDF2FlowChart is a web application that converts a PDF document into a hierarchi
    If a `requirements.txt` file is not provided, you can install dependencies manually:
 
    ```bash
-   pip install streamlit google-generativeai PyPDF2
+   pip install streamlit google-generativeai PyPDF2 pdf2image pytesseract weasyprint tesseract
    ```
 
 ## Configuration
