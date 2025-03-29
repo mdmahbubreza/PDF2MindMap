@@ -2,3 +2,4 @@ streamlit
 google-generativeai
 PyPDF2
 pdf2image
+poppler-utils
