@@ -158,7 +158,7 @@ def main():
                         # Place the Download HTML button at the top
                         html_content = create_markmap_html(markdown_content)
                         st.download_button(
-                            label="⬇️ Download Mindmap HTML",
+                            label="⬇️📊 Download Mindmap",
                             data=html_content,
                             file_name="interactive_mindmap.html",
                             mime="text/html",
