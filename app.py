@@ -135,7 +135,7 @@ def create_markmap_html(markdown_content):
 def main():
     st.set_page_config(layout="wide")
     
-    st.title("PDF to Mindmap Converter ")
+    st.title("PDF2FlowChart Converter ")
     st.markdown("""
     
     """)
