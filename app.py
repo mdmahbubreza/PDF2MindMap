@@ -221,8 +221,8 @@ def main():
                         st.text_area("Markdown Content", markdown_content, height=400)
 
                     with tab3:
-                        st.subheader("❓ Questions & Imp Topic")
-                        if st.button("🔄 Generate Questions"):
+                        st.subheader("❓ Questions and Topic Importance")
+                        if st.button("Generate Questions"):
                             with st.spinner("🔄 Generating questions and analyzing topic importance..."):
                                 questions = generate_questions_from_text(text)
                                 if questions:
