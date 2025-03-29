@@ -3,6 +3,9 @@ import streamlit as st
 import google.generativeai as genai
 from PyPDF2 import PdfReader
 import streamlit.components.v1 as components
+from pdf2image import convert_from_path
+import pytesseract
+import tempfile
 
 # Load API key from environment variable
 API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -20,17 +23,37 @@ def configure_genai():
         return False
 
 def extract_text_from_pdf(pdf_file):
-    """Extract text from uploaded PDF file."""
+    """Extract text from uploaded PDF file, including scanned PDFs."""
     try:
-        pdf_reader = PdfReader(pdf_file)
+        # Save the uploaded file to a temporary location
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+            temp_file.write(pdf_file.read())
+            temp_file_path = temp_file.name
+
+        # Attempt to extract text using PyPDF2
+        pdf_reader = PdfReader(temp_file_path)
         text = "\n".join(page.extract_text() for page in pdf_reader.pages if page.extract_text())
+        
+        # If no text is extracted, use OCR
         if not text.strip():
-            st.warning("No text could be extracted from the PDF. Ensure it's not scanned or image-based.")
-            return None
+            st.warning("No text could be extracted from the PDF. Attempting OCR...")
+            images = convert_from_path(temp_file_path)  # Convert PDF pages to images
+            ocr_text = ""
+            for i, image in enumerate(images):
+                ocr_text += pytesseract.image_to_string(image) + "\n"
+            if not ocr_text.strip():
+                st.error("OCR failed to extract text. Ensure the PDF contains readable text or images.")
+                return None
+            return ocr_text.strip()
+        
         return text.strip()
     except Exception as e:
         st.error(f"Error reading PDF: {str(e)}")
         return None
+    finally:
+        # Clean up the temporary file
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
 
 def create_mindmap_markdown(text):
     """Generate mindmap markdown using Gemini AI."""
@@ -198,7 +221,7 @@ def main():
                         st.text_area("Markdown Content", markdown_content, height=400)
 
                     with tab3:
-                        st.subheader("❓ Questions and Importance Topic")
+                        st.subheader("❓ Questions & Imp Topic")
                         if st.button("🔄 Generate Questions"):
                             with st.spinner("🔄 Generating questions and analyzing topic importance..."):
                                 questions = generate_questions_from_text(text)
