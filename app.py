@@ -134,6 +134,28 @@ def convert_html_to_pdf(html_content):
         st.error(f"Error converting HTML to PDF: {str(e)}")
         return None
 
+def generate_questions_from_text(text):
+    """Generate questions from the given text using Google Generative AI."""
+    try:
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        prompt = """
+        Based on the following text, generate a list of questions that test comprehension and understanding of the content. 
+        Provide the questions in a numbered list format.
+
+        Text:
+        {text}
+
+        Respond only with the list of questions.
+        """
+        response = model.generate_content(prompt.format(text=text))
+        if not response.text or not response.text.strip():
+            st.error("Received empty response from Gemini AI")
+            return None
+        return response.text.strip().split("\n")  # Split the response into a list of questions
+    except Exception as e:
+        st.error(f"Error generating questions: {str(e)}")
+        return None
+
 def main():
     st.set_page_config(layout="wide")
     st.title("📄 PDF to Mindmap Converter")
@@ -150,27 +172,22 @@ def main():
                 st.info(f"✅ Successfully extracted {len(text)} characters from PDF")
                 markdown_content = create_mindmap_markdown(text)
                 if markdown_content:
-                    tab1, tab2 = st.tabs(["📊 Mindmap", "📝 Markdown"])
+                    tab1, tab2, tab3 = st.tabs(["📊 Mindmap", "📝 Markdown", "❓ Questions"])
                     
                     with tab1:
                         st.subheader("🌳 Interactive Mindmap")
-                        
-                        # Place the Download HTML button at the top
                         html_content = create_markmap_html(markdown_content)
                         st.download_button(
-                            label="⬇️📊 Download Mindmap",
+                            label="⬇️ Download Mindmap",
                             data=html_content,
                             file_name="interactive_mindmap.html",
                             mime="text/html",
                             key="download_html"
                         )
-                        
-                        # Display the interactive mindmap
                         components.html(html_content, height=700, scrolling=True)
                     
                     with tab2:
                         st.subheader("📝 Generated Markdown")
-                        st.text_area("Markdown Content", markdown_content, height=400)
                         st.download_button(
                             label="⬇️ Download Markdown",
                             data=markdown_content,
@@ -178,6 +195,19 @@ def main():
                             mime="text/markdown",
                             key="download_markdown"
                         )
+                        st.text_area("Markdown Content", markdown_content, height=400)
+
+                    with tab3:
+                        st.subheader("❓ Questions and Topic Importance")
+                        if st.button("🔄 Generate Questions"):
+                            with st.spinner("🔄 Generating questions and analyzing topic importance..."):
+                                questions = generate_questions_from_text(text)
+                                if questions:
+                                    st.markdown("### Generated Questions:")
+                                    for question in questions:
+                                        st.markdown(f"- {question}")
+                                else:
+                                    st.error("Failed to generate questions. Please try again.")
 
 if __name__ == "__main__":
     main()
