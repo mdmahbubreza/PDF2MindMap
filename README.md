@@ -16,6 +16,10 @@ PDF2MindMap is a web application that converts a PDF document into a hierarchica
   - `streamlit`
   - `google-generativeai`
   - `PyPDF2`
+  - `pdf2image`
+  - `pytesseract`
+  - `weasyprint`
+  - `tesseract`
 - A valid Google API key for the Generative AI service. Replace the placeholder in the code with your API key.
 
 ## Installation
