@@ -1,6 +1,6 @@
-# PDF2FlowChart
+# PDF2MindMap
 
-PDF2FlowChart is a web application that converts a PDF document into a hierarchical mindmap (flowchart) visualization. It extracts text from your PDF, uses Google's Generative AI to generate a structured markdown mindmap, and then renders an interactive visualization using Markmap.
+PDF2MindMap is a web application that converts a PDF document into a hierarchical mindmap (flowchart) visualization. It extracts text from your PDF, uses Google's Generative AI to generate a structured markdown mindmap, and then renders an interactive visualization using Markmap.
 
 ## Features
 
@@ -23,8 +23,8 @@ PDF2FlowChart is a web application that converts a PDF document into a hierarchi
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/mdmahbubreza/PDF2FlowChart.git
-   cd PDF2FlowChart
+   git clone https://github.com/mdmahbubreza/PDF2MindMap.git
+   cd PDF2MindMap
    ```
 
 2. **Create a virtual environment (optional but recommended):**
