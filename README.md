@@ -1,6 +1,7 @@
 # PDF2MindMap
 
 PDF2MindMap is a web application that converts a PDF document into a hierarchical mindmap (flowchart) visualization. It extracts text from your PDF, uses Google's Generative AI to generate a structured markdown mindmap, and then renders an interactive visualization using Markmap.
+
 Live site: https://pdf-to-mindmap.streamlit.app
 
 ## Features
